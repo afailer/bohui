@@ -23,6 +23,14 @@ const router = new VueRouter({
   routes: routes
 });
 
+const eventBus = {
+  install(Vue, options) {
+    Vue.prototype.$bus = new Vue();
+  }
+};
+
+Vue.use(eventBus);
+
 Vue.use(VueRouter);
 Vue.use(MuseUI);
 Vue.use(Vuex);

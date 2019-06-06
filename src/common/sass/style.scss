@@ -127,9 +127,9 @@ html {
       z-index: 99999;
     }
   }
-
   .content {
     height: 100%;
+
   }
   .content > div {
     width: 100%;
@@ -307,6 +307,9 @@ html {
         width: 100%;
         min-height: 216px;
       }
+    }
+    .bohui-tongji{
+      z-index: 99999;
     }
     .icon-container {
       display: flex;

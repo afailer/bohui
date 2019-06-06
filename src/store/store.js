@@ -25,6 +25,7 @@ if(localStorage.getItem("offsetval")){
 //初始化
 const state = {
     ipaddress:"http://39.104.185.135/qgnq/api/v2/",
+    bohuiAddress: "http://10.5.10.169:8084",
     client:'country',//目前展示级别（全国或者地区）--全国
     terminal:'web',//终端
     prov:prov,
