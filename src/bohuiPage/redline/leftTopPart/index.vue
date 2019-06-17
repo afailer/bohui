@@ -4,7 +4,7 @@
         <span class="sprites-rt"></span>
         <span class="sprites-lb"></span>
         <span class="sprites-rb"></span>
-        <div class="title">红线统计</div>
+        <div class="title">{{currentArea}}红线统计</div>
         <mu-paper :z-depth="1" style="background: transparent">
             <mu-data-table @row-click=rowClick  :columns="tableTitles" :data="tableList">
                 <template slot-scope="scope">
@@ -14,7 +14,7 @@
                 </template>
             </mu-data-table>
         </mu-paper>
-        <div id="redLineChart" style="width: 100%;height: 500px;z-index: 9999999;margin-top: 10px"></div>
+        <div id="redLineChart" style="width: 100%;height: 60%;z-index: 9999999;margin-top: 10px"></div>
     </div>
 </template>
 
@@ -33,15 +33,29 @@ export default {
                 {title: '占全县国土比例',name:'rate',width:80}
             ],
             tableList: [],
-            currentRowName:''
+            currentRowName:'',
+            currentArea: this.$store.state.areaName
         }
     },
     mounted() {
         this.initData();
     },
+    computed:{
+      areaAndTime(){
+        return [
+            this.$store.state.areaCode,
+            this.$store.state.dateTime
+        ]
+      }
+    },
+    watch:{
+        areaAndTime(){
+            this.initData();
+        }
+    },
     methods:{
         initData(){
-            const url = this.$store.state.bohuiAddress + '/redlineData/data?areaCode=620121&dataTime=2019-01-05';
+            const url = this.$store.state.bohuiAddress + `/redlineData/data?areaCode=${this.$store.state.areaCode}&dataTime=${this.$store.state.dataTime}`;
             this.$http.get(url).then(res => {
                 this.totalData = res.body.data;
                 this.$bus.$emit("redData", this.totalData);
@@ -49,7 +63,6 @@ export default {
                     if(d.type === 1){
                         this.processChartData(d);
                     }
-
                     if(d.type === 1 || d.type === 3){
                         const item = {
                             lineName: d.name

@@ -5,21 +5,19 @@
             <left-top></left-top>
             <left-bottom></left-bottom>
             <right-top></right-top>
-            <right-bottom></right-bottom>
         </div>
     </div>
 </template>
 
 <script>
     import $ from "jquery";
-    import BohuiMap from '@/components/map.vue'
+    import BohuiMap from './map'
     import LeftTop from './leftTopPart'
     import LeftBottom from './leftBottomPart'
     import RightTop from './rightTopPart'
-    import RightBottom from './rightBottomPart'
     export default {
         name: 'index',
-        components: {BohuiMap, LeftTop, LeftBottom, RightTop, RightBottom},
+        components: {BohuiMap, LeftTop, LeftBottom, RightTop},
         mounted() {
             if (this.$store.state.terminal == "web") {
                 window.fullHeight = document.documentElement.clientHeight;
@@ -30,6 +28,9 @@
 
                 $(".myoverview.commondiv,.mystatistics.commondiv").height(
                     (window.fullHeight - 154) / 2 + "px"
+                );
+                $(".mytable").height(
+                    (window.fullHeight - 150) + "px"
                 );
                 var margintop = ((window.fullHeight - 154) / 2 - 338) / 2;
                 if (margintop < 0) {

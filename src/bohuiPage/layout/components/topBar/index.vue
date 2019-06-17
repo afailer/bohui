@@ -1,5 +1,5 @@
 <template>
-    <div class="topBar">
+    <div class="topBar" style="height: 80px">
 
     </div>
 </template>

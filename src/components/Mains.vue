@@ -1,12 +1,13 @@
 <template>
   <div>
+    <img src="../image/logo.png" v-if="$store.state.terminal=='web'" style="position: absolute; z-index: 99999999;width: 200px;height: 68px">
     <!-- header -->
     <mu-appbar style="width: 100%;" color="primary" id="header">
       <mu-button icon slot="left" @click="changenav" v-if="$store.state.terminal=='phone'">
         <mu-icon value="menu"></mu-icon>
       </mu-button>
       <mu-button flat slot="left" @click="downloadreport" v-if="$store.state.terminal=='web'&&$store.state.prov!=''&&$store.state.prov!=440000">报告下载</mu-button>
-      <img src="../image/logo.png" v-if="$store.state.terminal=='web'">
+
       <span>{{ title }}</span>
       <!-- 手机端 -->
       <mu-button flat slot="right" v-if="$store.state.terminal=='phone'&&$store.state.username==''"  @click="$router.push('/login')">
@@ -29,7 +30,7 @@
       <mu-button flat slot="right" @click="backhome" v-if="$store.state.terminal=='web'&&$store.state.prov!=''">返回首页</mu-button>
       <mu-button flat slot="right" @click="$router.push('/login')" v-if="$store.state.terminal=='web'&&$store.state.username==''" >登录/注册</mu-button>
       <mu-tooltip v-if="$store.state.terminal=='web'&&$store.state.username!=''"  content="点击查看账号权限" flat slot="right" >
-        <mu-button @click="openSimpleDialog">{{$store.state.username}}</mu-button>
+        <mu-button @click="openSimpleDialog"></mu-button>
       </mu-tooltip>
       <!-- 账号权限+退出登录 -->
       <mu-dialog width="500" :padding="padding" :open.sync="openSimple">
@@ -99,16 +100,7 @@
 
     <!-- 地图 -->
     <div class="content">
-      <chartcontent @listenToVer="verification"  :messages="[leftnum,rightnum]"></chartcontent>
-      <p class="infoval" v-if="$store.state.prov!=''&&$store.state.prov!='440000'">
-      国家统计局河北调查总队&nbsp;&nbsp;&nbsp;&nbsp;北京师范大学&nbsp;&nbsp;北京尚德智汇科技有限公司
-      </p>
-      <p class="infoval" v-if="$store.state.prov=='440000'">
-        国家统计局广东调查总队&nbsp;&nbsp;&nbsp;&nbsp;北京师范大学&nbsp;&nbsp;北京尚德智汇科技有限公司
-      </p>
-      <p class="infoval" v-if="$store.state.prov==''">
-        北京师范大学&nbsp;&nbsp;北京尚德智汇科技有限公司
-      </p>
+      <router-view></router-view>
     </div>
     <mu-snackbar color="error" :position="this.position" :open.sync="this.open">
       {{this.message}}
@@ -132,7 +124,7 @@ export default {
       open: false, //msg显示
       timeout: 1000, //msg显示时间
       msgtimer: null, //msg定时
-      title: "全国农情遥感监测系统",
+      title: "智慧生态监测管理平台",
       openSimple: false, //dialog显示
       userdata: null,
       list: [],
@@ -277,13 +269,13 @@ export default {
                 var params = "";
                 if (currentprov == 130000) {
                   params = "hebei";
-                  this.title = "河北省农情遥感监测系统";
+                  this.title = "智慧生态监测管理平台";
                   //改变store内的prodType与crop
                   this.$store.commit("changeProType", [0,"产量预估"]);
                   this.$store.commit("changeCrop", [0,"冬小麦"]);
                 } else if (currentprov == 440000) {
                   params = "guangdong";
-                  this.title = "广东省农情遥感监测系统";
+                  this.title = "智慧生态监测管理平台";
                   //改变store内的prodType与crop
                   this.$store.commit("changeProType", [0,"产量预估"]);
                   this.$store.commit("changeCrop", [9,"早稻"]);
@@ -319,7 +311,7 @@ export default {
       this.$store.commit("changelevel", 1);
       localStorage.setItem("leveldata", 1);
       this.$router.push({ path: "/", query: { prov: "quanguo" } });
-      this.title = "全国农情遥感监测系统";
+      this.title = "智慧生态监测管理平台";
       if(localStorage.getItem("timedata")){
         localStorage.removeItem("timedata");
         localStorage.removeItem("offsetval");

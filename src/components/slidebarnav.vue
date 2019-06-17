@@ -19,10 +19,10 @@
               <li
                 :param0="item.id"
                 :param1="itemlist.id"
-                v-for="itemlist in item.second"
+                v-for="itemlist in item.secondMenu"
                 :key="itemlist.id"
                 :class="currentId==item.id&&currentList==itemlist.id?'ischecked':''"
-                @click="changeList(item.id,itemlist.id,item.name,itemlist.name)"
+                @click="changeList(item.id,itemlist.id,item.name,itemlist.name,itemlist)"
               >
                 <div class="radio_option">{{ itemlist.name }}</div>
               </li>
@@ -44,7 +44,7 @@
               <li
                 :param0="item.id"
                 :param1="itemlist.id"
-                v-for="itemlist in item.second"
+                v-for="itemlist in item.secondMenu"
                 :key="itemlist.id"
                 @click="changeSlideList(item.id,itemlist.id,item.name,itemlist.name)"
               >
@@ -120,13 +120,14 @@ export default {
         
       }
       this.$http
-        .get("http://39.104.185.135/qgnq/api/v2/catalogs", {
+        .get("http://39.104.185.135:8084/manager/menu", {
           params: { client: clientparms }
         })
         .then(function(result) {
-          this.navjson = result.body.data.catalog.first;
+          this.navjson = result.body.data;
+          console.log(this.navjson);
           this.currentId = this.navjson[0].id;
-          this.currentList = this.navjson[0].second[0].id;
+          this.currentList = this.navjson[0].secondMenu[0].id;
           var obj = {};
           obj[clientparms]=this.navjson;
           if(localStorage.getItem("nav")){
@@ -138,20 +139,27 @@ export default {
         });
     },
     //切换导航
-    changeList(itemId, itemlistId,itemhtml, itemlisthtml) {
-      if(this.$store.state.prov!=''&&this.$store.state.prov!=440000){
-        //切换不同first导航，删除默认时间及offset
-        if(this.currentId !=itemId||this.currentList!=itemlistId){
-          localStorage.removeItem("timedata");
-          localStorage.removeItem("offsetval");
-          localStorage.setItem("offsetval",0);
+    changeList(itemId, itemlistId,itemhtml, itemlisthtml, itemlist) {
+      if(itemlist.type === 2){
+        this.$router.push({
+          path: '/active'
+        })
+      }else{
+        if(this.$store.state.prov!=''&&this.$store.state.prov!=440000){
+          //切换不同first导航，删除默认时间及offset
+          if(this.currentId !=itemId||this.currentList!=itemlistId){
+            localStorage.removeItem("timedata");
+            localStorage.removeItem("offsetval");
+            localStorage.setItem("offsetval",0);
+          }
         }
+        this.currentId = itemId;
+        this.currentList = itemlistId;
+        //改变store内的prodType与crop
+        this.$store.commit("changeProType", [itemId,itemhtml]);
+        this.$store.commit("changeCrop", [itemlistId,itemlisthtml]);
       }
-      this.currentId = itemId;
-      this.currentList = itemlistId;
-      //改变store内的prodType与crop
-      this.$store.commit("changeProType", [itemId,itemhtml]);
-      this.$store.commit("changeCrop", [itemlistId,itemlisthtml]);
+
       
     },
     changeSlide(itemId,item){

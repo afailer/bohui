@@ -12,6 +12,7 @@ import store from "./store/store.js"
 
 //Muse-ui及icon
 import MuseUI from 'muse-ui';
+import "../static/iconfont2/iconfont.css"
 import 'muse-ui/dist/muse-ui.css';
 import "../static/iconfont/material-icons.css";
 

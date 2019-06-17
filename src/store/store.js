@@ -25,7 +25,8 @@ if(localStorage.getItem("offsetval")){
 //初始化
 const state = {
     ipaddress:"http://39.104.185.135/qgnq/api/v2/",
-    bohuiAddress: "http://10.5.10.169:8084",
+    bohuiAddress: "http://39.104.185.135:8084",
+    geoIP: "http://10.5.10.8:8082",
     client:'country',//目前展示级别（全国或者地区）--全国
     terminal:'web',//终端
     prov:prov,
@@ -36,7 +37,12 @@ const state = {
     prodtypeval:'产量预估',
     username:usernames, 
     level:1,
-    offset:offset
+    offset:offset,
+    areaCode: 620121, // 兰州620100
+    dataTime: '2019-01-05',
+    areaName: '永登县',
+    leftDataTime: '',
+    rightDataTime: ''
 };
 
 const mutations = {
@@ -64,6 +70,12 @@ const mutations = {
     changeoffset(state,num){
         state.offset=num;
     },
+    changeLeftDataTime(state,time){
+        state.leftDataTime = time
+    },
+    changeRightDataTime(state,time){
+        state.rightDataTime = time
+    }
 };
 
 

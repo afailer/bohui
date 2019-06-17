@@ -4,19 +4,21 @@
         <span class="sprites-rt"></span>
         <span class="sprites-lb"></span>
         <span class="sprites-rb"></span>
-        <div class="title">红线详情</div>
-        <div v-for="id in redLinesIds"  :id="id" :key="id" style="width: 100%;min-height:40%;z-index: 9999999;"></div>
+        <div class="title">{{currentArea}}红线详情</div>
+        <div v-for="id in redLinesIds"  :id="id" :key="id" style="width: 100%;min-height:32%;z-index: 9999999; box-sizing: border-box; padding: 0 10px; margin: 0 auto;"></div>
     </div>
 </template>
 
 <script>
+import { getColor } from "../../../utils/colorUtil";
 export default {
     name: '',
     data(){
         return {
             redDatas:'',
             redLinesIds: [],
-            redLinesOption:new Map()
+            redLinesOption:new Map(),
+            currentArea: this.$store.state.areaName
         }
     },
     created() {
@@ -40,29 +42,52 @@ export default {
                             name:rdItem.name,
                             type: 'bar',
                             data: [rdItem.area],
-                            barWidth: 10,
-                            itemStyle : { normal: {label : {show: true, position: 'insideTop',textStyle:{color:'#fff'}}}}
+                            itemStyle:{
+                                normal:{
+                                    color: getColor()
+                                }
+                            }
                         })
                     }
                 });
                 const option = {
-                    title:{
-                        text: '红线总计'
-                    },
                     tooltip:{
                         trigger:'axis'
                     },
                     legend:{
-                        data:legendData
+                        data:legendData,
+                        top:'13%',
+                        textStyle: {
+                            fontSize: '14px',
+                            color: "#fff"
+                        }
+                    },
+                    grid:{
+                        left: '2%',
+                        top:'55px',
+                        bottom: '1%',
+                        containLabel: true
                     },
                     xAxis:[{
-                        type: 'value',
-                        boundaryGap: [0,0.01]
+                        type: 'category',
+                        data: [rd.name],
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#fff'
+                            }
+                        }
                     }],
                     yAxis: [
                         {
-                            type: 'category',
-                            data: [rd.name]
+                            type: 'value',
+                            boundaryGap: [0,0.01],
+                            axisLabel: {
+                                show: true,
+                                textStyle: {
+                                    color: '#fff'
+                                }
+                            }
                         }
                     ],
                     series:seriesVal

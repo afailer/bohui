@@ -9,13 +9,28 @@ const router = [
     {
         path : '/',  //到时候地址栏会显示的路径
         name : 'mains',
-        component :  mains   // Home是组件的名字，这个路由对应跳转到的组件。。注意component没有加“s”.
-    },
-    {
-        path: '/bohui',
-        name: 'bohui',
-        component: () =>
-            import("@/bohuiPage/index/index.vue")
+        component :  mains,   // Home是组件的名字，这个路由对应跳转到的组件。。注意component没有加“s”.
+        redirect: '/redline',
+        children: [
+            {
+                path: "content",
+                name: "content",
+                component: () =>
+                    import("@/components/content.vue")
+            },
+            {
+                path: "redline",
+                name: 'redline',
+                component: () =>
+                    import("@/bohuiPage/redline/index.vue")
+            },
+            {
+                path: "active",
+                name: 'active',
+                component: () =>
+                    import("./bohuiPage/humanActive/index")
+            }
+        ]
     },
     {
         path : '/login',  //到时候地址栏会显示的路径
