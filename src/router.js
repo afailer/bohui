@@ -1,47 +1,38 @@
+import Vue from 'vue'
+import Router from 'vue-router'
+import Home from './views/Home.vue'
 
-import Vue from "vue";
-import VueRouter from "vue-router";
-import mains from './components/Mains.vue';
-import login from './components/login.vue';
+Vue.use(Router)
 
-Vue.use(VueRouter)
-const router = [
+export default new Router({
+  mode: 'hash',
+  base: process.env.BASE_URL,
+  routes: [
     {
-        path : '/',  //到时候地址栏会显示的路径
-        name : 'mains',
-        component :  mains,   // Home是组件的名字，这个路由对应跳转到的组件。。注意component没有加“s”.
-        redirect: '/redline',
-        children: [
-            {
-                path: "content",
-                name: "content",
-                component: () =>
-                    import("@/components/content.vue")
-            },
-            {
-                path: "redline",
-                name: 'redline',
-                component: () =>
-                    import("@/bohuiPage/redline/index.vue")
-            },
-            {
-                path: "active",
-                name: 'active',
-                component: () =>
-                    import("./bohuiPage/humanActive/index")
-            }
-        ]
-    },
-    {
-        path : '/login',  //到时候地址栏会显示的路径
-        name : 'login',
-        component :  login   // Home是组件的名字，这个路由对应跳转到的组件。。注意component没有加“s”.
-    },
-    // {
-    //     path : '/login',  //到时候地址栏会显示的路径
-    //     name : 'login',
-    //     component :  login   // Home是组件的名字，这个路由对应跳转到的组件。。注意component没有加“s”.
-    // }
-]
-
-export default router;
+      path: '/',
+      name: 'home',
+      component: Home,
+      redirect: 'redline',
+      children: [
+        {
+          path: 'content',
+          name: 'content',
+          component: () =>
+            import('@/components/contents.vue')
+        },
+        {
+          path: 'redline',
+          name: 'redline',
+          component: () =>
+            import('@/views/bohui/redline/index.vue')
+        },
+        {
+          path: 'active',
+          name: 'active',
+          component: () =>
+            import('@/views/bohui/active/index.vue')
+        }
+      ]
+    }
+  ]
+})
